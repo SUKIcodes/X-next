@@ -16,7 +16,7 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "X",
+  title: "X - KING",
   description: "X Clone using Next.js and Tailwind.css",
 };
 
@@ -28,15 +28,15 @@ export default function RootLayout({ children }) {
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <div className="flex justify-between max-w-6xl mx-auto ">
-            <div className="hidden lg:inline max-w-[200px]  ">
+            <div className="hidden lg:inline  border-r border-gray-700 h-screen  ">
               <Sidebar />
             </div>
-            <div className="max-w-xl mx-auto">{children}</div>
-            <div className="p-3 hidden lg:inline max-w-[300px]">
+            <div className="w-2xl flex-1 mx-auto">{children}</div>
+            <div className="p-3 hidden lg:inline border-l max-w-[300px] border-gray-700 h-screen">
               <input
                 type="text"
                 placeholder="Search..."
-                className="w-full outline-none border-none p-3 rounded-full bg-gray-200 "
+                className="w-full outline-none border-none p-3 rounded-full bg-gray-200  "
               />
               <News />
             </div>

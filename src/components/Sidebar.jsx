@@ -48,9 +48,8 @@ export default function Sidebar() {
             src={session.user.image}
             alt="image"
           />
-
+          <p className="font-bold">{session.user.name}</p>
           <p>{session.user.username}</p>
-          <p>{session.user.name}</p>
           <p>{session.user.email}</p>
         </div>
       )}
