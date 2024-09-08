@@ -28,11 +28,11 @@ export default function RootLayout({ children }) {
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <div className="flex justify-between max-w-6xl mx-auto ">
-            <div className="hidden lg:inline  border-r border-gray-700 h-screen  ">
+            <div className="hidden lg:inline  border-r border-gray-700 h-screen sticky top-0 z-50  ">
               <Sidebar />
             </div>
             <div className="w-2xl flex-1 mx-auto">{children}</div>
-            <div className="p-3 hidden lg:inline border-l max-w-[300px] border-gray-700 h-screen">
+            <div className="p-3 hidden lg:inline border-l max-w-[300px] border-gray-700 h-screen sticky top-0 z-50 overflow-y-scroll">
               <input
                 type="text"
                 placeholder="Search..."
