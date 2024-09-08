@@ -82,18 +82,17 @@ export default function Input() {
     setText("");
     setImageFileUrl(null);
     setSelectedFile(null);
+    location.reload();
   };
 
   if (!session) return null;
 
   return (
-    <div className="flex border-b border-gray-200 p-3 space-x-3 w-full">
+    <div className="flex border-b border-gray-200 p-3 space-x-3 w-full ">
       <img
         src={session.user.image}
         alt="image"
-        className={`w-11 h-11 rounded-full cursor-pointer hover:brightness-125 ${
-          imageFileUploading ? "animate-pulse" : ""
-        }`}
+        className="w-11 h-11 rounded-full cursor-pointer hover:brightness-125 "
       />
       <div className="w-full divide-y divide-gray-200 ">
         <textarea
@@ -107,7 +106,9 @@ export default function Input() {
           <img
             src={imageFileUrl}
             alt="image"
-            className="w-full max-h-[250px] object-cover cursor-pointer"
+            className={`w-full max-h-[250px] object-cover cursor-pointer ${
+              imageFileUploading ? "animate-pulse" : ""
+            }`}
           />
         )}
         <div className="flex justify-between items-center pt-2.5">
