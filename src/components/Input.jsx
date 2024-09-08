@@ -10,13 +10,22 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
+import {
+  addDoc,
+  collection,
+  getFirestore,
+  serverTimestamp,
+} from "firebase/firestore";
 
 export default function Input() {
   const { data: session } = useSession();
+  const [text, setText] = useState("");
+  const [postLoading, setPostLoading] = useState(false);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageFileUploading, setImageFileUploading] = useState(false);
   const imagePickRef = useRef(null);
+  const db = getFirestore(app);
   const addImageToPost = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -58,6 +67,23 @@ export default function Input() {
     );
   };
 
+  const handleSubmit = async () => {
+    setPostLoading(true);
+    const docRef = await addDoc(collection(db, "posts"), {
+      uid: session.user.uid,
+      username: session.user.username,
+      name: session.user.name,
+      text,
+      profileImg: session.user.image,
+      image: imageFileUrl,
+      timestamp: serverTimestamp(),
+    });
+    setPostLoading(false);
+    setText("");
+    setImageFileUrl(null);
+    setSelectedFile(null);
+  };
+
   if (!session) return null;
 
   return (
@@ -65,10 +91,14 @@ export default function Input() {
       <img
         src={session.user.image}
         alt="image"
-        className="w-11 h-11 rounded-full cursor-pointer hover:brightness-125"
+        className={`w-11 h-11 rounded-full cursor-pointer hover:brightness-125 ${
+          imageFileUploading ? "animate-pulse" : ""
+        }`}
       />
       <div className="w-full divide-y divide-gray-200 ">
         <textarea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
           className="w-full border-none outline-none tracking-wide min-h-[50px]"
           rows={2}
           placeholder="Whats happening..."
@@ -92,7 +122,11 @@ export default function Input() {
             ref={imagePickRef}
             onChange={addImageToPost}
           />
-          <button className="text-white cursor-pointer font-bold disabled:opacity-50 bg-blue-500 rounded-full hover:brightness-125 px-3 py-2">
+          <button
+            disabled={text.trim() === "" || postLoading || imageFileUploading}
+            onClick={handleSubmit}
+            className="text-white cursor-pointer font-bold disabled:opacity-50 bg-blue-500 rounded-full hover:brightness-125 px-3 py-2"
+          >
             Post
           </button>
         </div>
