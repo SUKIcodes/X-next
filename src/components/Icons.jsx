@@ -19,7 +19,7 @@ import {
 } from "firebase/firestore";
 import { app } from "@/app/firebase";
 
-export default function Icons({ id }) {
+export default function Icons({ id, uid }) {
   const { data: session } = useSession();
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState([]);
@@ -52,6 +52,22 @@ export default function Icons({ id }) {
     );
   }, [likes]);
 
+  const deletePost = async () => {
+    if (window.confirm("Are you sure you want to delete the post?")) {
+      if (session?.user?.uid === uid) {
+        deleteDoc(doc(db, "posts", id))
+          .then(() => {
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        alert("You are not allowed to delete this post.");
+      }
+    }
+  };
+
   return (
     <div className="flex justify-between p-3">
       <HiOutlineChat className="h-8 w-8 cursor-pointer rounded-full transition-all duration-200 ease-in-out p-2 hover:text-sky-500 hover:bg-sky-100" />
@@ -72,7 +88,12 @@ export default function Icons({ id }) {
         )}
       </div>
 
-      <HiOutlineTrash className="h-8 w-8 cursor-pointer rounded-full transition-all duration-200 ease-in-out p-2 hover:text-sky-500 hover:bg-sky-100" />
+      {session?.user?.uid === uid && (
+        <HiOutlineTrash
+          onClick={deletePost}
+          className="h-8 w-8 cursor-pointer rounded-full transition-all duration-200 ease-in-out p-2 hover:text-sky-500 hover:bg-sky-100"
+        />
+      )}
     </div>
   );
 }
